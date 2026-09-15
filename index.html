@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adrian Zambrano - 2D</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: white;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(0,180,255,.25), transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(0,100,255,.25), transparent 30%),
+        linear-gradient(135deg, #021b2d, #034b70, #001827);
+    overflow-x: hidden;
+}
+
+/* Burbujas */
+.burbuja {
+    position: fixed;
+    bottom: -100px;
+    width: 25px;
+    height: 25px;
+    border: 2px solid rgba(255,255,255,.4);
+    border-radius: 50%;
+    animation: subir 10s infinite ease-in;
+    pointer-events: none;
+}
+
+.b1 { left: 10%; animation-delay: 1s; }
+.b2 { left: 25%; width: 15px; height: 15px; animation-delay: 4s; }
+.b3 { left: 45%; width: 35px; height: 35px; animation-delay: 2s; }
+.b4 { left: 65%; width: 18px; height: 18px; animation-delay: 6s; }
+.b5 { left: 85%; width: 30px; height: 30px; animation-delay: 3s; }
+
+@keyframes subir {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-110vh) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Encabezado */
+header {
+    text-align: center;
+    padding: 60px 20px 35px;
+}
+
+header h1 {
+    font-size: 55px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px #00c8ff;
+    animation: flotar 3s infinite ease-in-out;
+}
+
+header p {
+    font-size: 22px;
+    margin-top: 12px;
+    color: #bdeeff;
+}
+
+@keyframes flotar {
+    0%,100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* Contenedor */
+.contenedor {
+    width: 90%;
+    max-width: 1100px;
+    margin: auto;
+}
+
+/* Tarjeta */
+.tarjeta {
+    background: rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 25px;
+    padding: 30px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 15px 40px rgba(0,0,0,.3);
+}
+
+.tarjeta h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #8eeaff;
+    font-size: 30px;
+}
+
+/* Datos */
+.datos {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.dato {
+    background: rgba(0,0,0,.20);
+    padding: 15px 25px;
+    border-radius: 15px;
+    text-align: center;
+    min-width: 200px;
+}
+
+.dato strong {
+    display: block;
+    color: #72ddff;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+/* Frases */
+.frases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.frase {
+    min-height: 170px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 25px;
+    border-radius: 22px;
+    background: linear-gradient(
+        145deg,
+        rgba(0,180,255,.22),
+        rgba(0,50,100,.35)
+    );
+    border: 1px solid rgba(120,230,255,.35);
+    box-shadow: inset 0 0 25px rgba(0,190,255,.08);
+    font-size: 21px;
+    font-weight: bold;
+    transition: .4s;
+    animation: agua 4s infinite ease-in-out;
+}
+
+.frase:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 0 30px rgba(0,200,255,.5);
+}
+
+.frase:nth-child(2) {
+    animation-delay: 1s;
+}
+
+.frase:nth-child(3) {
+    animation-delay: 2s;
+}
+
+@keyframes agua {
+    0%,100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+/* Imagen */
+.imagen-contenedor {
+    width: 100%;
+    max-width: 750px;
+    height: 400px;
+    margin: auto;
+    border-radius: 25px;
+    overflow: hidden;
+    border: 2px solid rgba(130,230,255,.45);
+    background: rgba(0,30,55,.5);
+    box-shadow: 0 0 30px rgba(0,180,255,.25);
+}
+
+.imagen-contenedor img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: .5s;
+}
+
+.imagen-contenedor:hover img {
+    transform: scale(1.05);
+}
+
+/* Lista de estudiantes */
+.busqueda {
+    width: 100%;
+    padding: 15px;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    margin-bottom: 20px;
+    font-size: 16px;
+    background: rgba(255,255,255,.9);
+}
+
+.lista {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.estudiante {
+    padding: 13px 15px;
+    background: rgba(0,0,0,.20);
+    border-radius: 12px;
+    border-left: 4px solid #42d9ff;
+    transition: .3s;
+}
+
+.estudiante:hover {
+    transform: translateX(6px);
+    background: rgba(0,180,255,.18);
+}
+
+/* Frase final */
+.final {
+    text-align: center;
+    padding: 45px 20px;
+}
+
+.final h2 {
+    font-size: 42px;
+    text-shadow: 0 0 20px #00c8ff;
+    animation: brillo 2s infinite alternate;
+}
+
+@keyframes brillo {
+    from {
+        text-shadow: 0 0 10px #00c8ff;
+    }
+    to {
+        text-shadow: 0 0 35px #00eaff;
+    }
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #9edff2;
+}
+
+/* Celular */
+@media (max-width: 800px) {
+    header h1 {
+        font-size: 38px;
+    }
+
+    .frases {
+        grid-template-columns: 1fr;
+    }
+
+    .lista {
+        grid-template-columns: 1fr;
+    }
+
+    .imagen-contenedor {
+        height: 280px;
+    }
+
+    .final h2 {
+        font-size: 30px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Burbujas -->
+<div class="burbuja b1"></div>
+<div class="burbuja b2"></div>
+<div class="burbuja b3"></div>
+<div class="burbuja b4"></div>
+<div class="burbuja b5"></div>
+
+<header>
+    <h1>Adrian Zambrano</h1>
+    <p>Portal Estudiantil • 2D</p>
+</header>
+
+<div class="contenedor">
+
+    <!-- Información -->
+    <section class="tarjeta">
+        <h2>🌊 Información del Curso 🌊</h2>
+
+        <div class="datos">
+            <div class="dato">
+                <strong>ESTUDIANTE</strong>
+                Adrian Zambrano
+            </div>
+
+            <div class="dato">
+                <strong>CURSO</strong>
+                2D
+            </div>
+
+            <div class="dato">
+                <strong>INSTITUCIÓN</strong>
+                Alfredo Poveda
+            </div>
+        </div>
+    </section>
+
+    <!-- Frases -->
+    <section class="tarjeta">
+        <h2>🌊 Nuestro Curso 🌊</h2>
+
+        <div class="frases">
+
+            <div class="frase">
+                SIEMPRE MEJORANDO
+            </div>
+
+            <div class="frase">
+                LA INTELIGENCIA NOS PERSIGUE PERO NOSOTROS SOMOS MÁS RÁPIDOS
+            </div>
+
+            <div class="frase">
+                GANAREMOS LAS OLIMPIADAS
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Imagen -->
+    <section class="tarjeta">
+        <h2>📸 Recuerdo del Curso</h2>
+
+        <div class="imagen-contenedor">
+            <img src="imagen1.jpg">
+        </div>
+    </section>
+
+    <!-- Nómina -->
+    <section class="tarjeta">
+        <h2>👥 Nómina de Estudiantes</h2>
+
+        <input
+            type="text"
+            id="buscador"
+            class="busqueda"
+            placeholder="🔎 Buscar estudiante..."
+            onkeyup="buscarEstudiante()"
+        >
+
+        <div class="lista" id="lista">
+
+            <div class="estudiante">1. BALON ORRALA VANESSA MELISSA</div>
+            <div class="estudiante">2. BARAJA JARA MAYERLI INGRID</div>
+            <div class="estudiante">3. BETANCOURT ROMERO ALBA FIORELLA</div>
+            <div class="estudiante">4. CARPIO MERCHAN JOSTIN JESUS</div>
+            <div class="estudiante">5. CRUZ BAZAN VALESKA MAYERLI</div>
+            <div class="estudiante">6. CUJILEMA MULLO ERIKA ANABEL</div>
+            <div class="estudiante">7. DEL ROSARIO JAIME LAILA DANIELA</div>
+            <div class="estudiante">8. FLORES VILLON JOHN BYRON</div>
+            <div class="estudiante">9. FRANCO COCHEA GERSON XAVIER</div>
+            <div class="estudiante">10. GONZALEZ ZAVALA ALEJANDRA CAROLINA</div>
+            <div class="estudiante">11. HERRERA VERA SANDRA DANIELA</div>
+            <div class="estudiante">12. LAINEZ CHACON JOSSELYN ANAHI</div>
+            <div class="estudiante">13. LINO LEON LADY LISSETH</div>
+            <div class="estudiante">14. MACIAS BALON JEREMY MAURICIO</div>
+            <div class="estudiante">15. MEDINA NAVARRETE LUANA</div>
+            <div class="estudiante">16. MERA MERO IKER DIDDIER</div>
+            <div class="estudiante">17. MERO MARIN ANTHONY JOEL</div>
+            <div class="estudiante">18. MOSCOSO QUIMI ALISON LISBETH</div>
+            <div class="estudiante">19. OLMEDO LEON ABRAHAM JOSE</div>
+            <div class="estudiante">20. PANIMBOZA TIGRERO JONATHAN DAVID</div>
+            <div class="estudiante">21. PARRALES IZA RICARDO JAVIER</div>
+            <div class="estudiante">22. PILLIGUA PANCHANA ALAIN DANIEL</div>
+            <div class="estudiante">23. PLUA ORRALA EMELY NATASHA</div>
+            <div class="estudiante">24. QUIROZ PANCHANA CALEB JOSUE</div>
+            <div class="estudiante">25. RAMIREZ MENENDEZ ADONIS RAFAEL</div>
+            <div class="estudiante">26. REYES RODRIGUEZ MELISSA DANIELA</div>
+            <div class="estudiante">27. ROCA MENDEZ JONATHAN DANIEL</div>
+            <div class="estudiante">28. ROCA TIGRERO BRITANY LISETTE</div>
+            <div class="estudiante">29. RODRIGUEZ VERA CARLOS FRANCISCO</div>
+            <div class="estudiante">30. SILVESTRE DE LA CRUZ KEYLLER JAVIER</div>
+            <div class="estudiante">31. SILVESTRE REYES KIMBERLY PAMELA</div>
+            <div class="estudiante">32. SORIANO GUTIERREZ KARLA PAULINA</div>
+            <div class="estudiante">33. SUAREZ PILLIGUA ANDREA CAROLINA</div>
+            <div class="estudiante">34. VERA FLORES FERNANDO SEBASTIAN</div>
+            <div class="estudiante">35. VERA SILVESTRE DANNA JULIETH</div>
+            <div class="estudiante">36. VILLACIS GONZALEZ ALAN JOSE</div>
+            <div class="estudiante">37. WILA YAGUAL DANTE JEREMIAS</div>
+            <div class="estudiante">38. YAGUAL ALVARADO ETHAN JESHUA</div>
+            <div class="estudiante">39. YANES BECILLA ELSA ELIZABETH</div>
+            <div class="estudiante">40. ZAMBRANO GALARZA LEYBER LESTER</div>
+            <div class="estudiante">41. ZAMBRANO LOPEZ ADRIAN EMANUEL</div>
+
+        </div>
+    </section>
+
+    <!-- Mensaje final -->
+    <section class="final">
+        <h2>EL MEJOR CURSO DE TODO EL POVEDA 🌊🏆</h2>
+    </section>
+
+</div>
+
+<footer>
+    2D • Alfredo Poveda • Adrian Zambrano
+</footer>
+
+<script>
+function buscarEstudiante() {
+
+    let texto = document
+        .getElementById("buscador")
+        .value
+        .toLowerCase();
+
+    let estudiantes = document.querySelectorAll(".estudiante");
+
+    estudiantes.forEach(function(estudiante) {
+
+        let nombre = estudiante.textContent.toLowerCase();
+
+        if (nombre.includes(texto)) {
+            estudiante.style.display = "block";
+        } else {
+            estudiante.style.display = "none";
+        }
+
+    });
+}
+</script>
+
+</body>
+</html>
+<img src="imagen1.jpg">
